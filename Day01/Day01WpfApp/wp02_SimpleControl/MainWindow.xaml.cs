@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,13 @@ namespace wp02_SimpleControl
         private void SldStep_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             PgbStep.Value = SldStep.Value;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var path = Directory.GetCurrentDirectory();
+            MediaPlayer.Source = new Uri(path + @"\Resources\earth.avi",UriKind.RelativeOrAbsolute);
+            MediaPlayer.Play();
         }
     }
 }
