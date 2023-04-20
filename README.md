@@ -18,4 +18,10 @@ Windows Presentation Foundation
 
 ## 3일차
 - WPF 기초
-	- 데이터 바이닝 기초
+	- 데이터 바이닝 마무리
+	- 디자인(템플릿, 스타일, 리소스, 리소스 딕셔너리)
+
+## 4일차
+- WPF 응용
+	- MahApps.Metro 디자인 적용
+	- MVVM 패턴
