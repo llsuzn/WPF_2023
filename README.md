@@ -15,13 +15,22 @@ Windows Presentation Foundation
   - BikeShop 시작
   - WPF만의 개발방식
   - DB 핸들링
+  <img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day02_1.png?raw=true" width=400 />  
 
 ## 3일차
 - WPF 기초
 	- 데이터 바이닝 마무리
 	- 디자인(템플릿, 스타일, 리소스, 리소스 딕셔너리)
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_1.png?raw=true" width=400 />  
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_2.png?raw=true" width=400 />  
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_3.png?raw=true" width=400 />  
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_4.png?raw=true" width=400 />  
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_5.png?raw=true" width=400 />  
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_6.png?raw=true" width=400 />  
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_7.png?raw=true" width=400 />  
 
 ## 4일차
 - WPF 응용
 	- MahApps.Metro 디자인 적용
 	- MVVM 패턴
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day04_1.png?raw=true" width=400 />  	
