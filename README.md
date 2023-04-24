@@ -34,3 +34,9 @@ Windows Presentation Foundation
 	- MahApps.Metro 디자인 적용
 	- MVVM 패턴
 <img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day04_1.png?raw=true" width=400 />  	
+
+## 5일차
+- WPF 응용
+	- MVVM 패턴
+	- MVVM framework / Caliburn
+	- 데이터바인딩 DB연동
