@@ -21,7 +21,7 @@ Windows Presentation Foundation
 - WPF 기초
 	- 데이터 바이닝 마무리
 	- 디자인(템플릿, 스타일, 리소스, 리소스 딕셔너리)
-<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_0.png?raw=true" width=400 />
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_0.gif?raw=true" width=400 />
 <img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_1.png?raw=true" width=400 />  
 <img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_2.png?raw=true" width=400 />  
 <img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_3.png?raw=true" width=400 />  
