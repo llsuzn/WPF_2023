@@ -56,5 +56,20 @@ Windows Presentation Foundation
 - WPF 응용
 	- 영화검색앱 완료
 	- DB 데이터바인딩(MySQL)
-<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day08_1.gif?raw=true" width=400 />
-<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day08_2.gif?raw=true" width=400 />
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day08_1.gif?raw=true" width=700 />
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day08_2.gif?raw=true" width=700 />
+	- 미세먼지확인 앱 개발
+		- MahApps.Metro
+		- 데이터포털 OpenAPI
+		- DB 데이터바인딩(MySQL)
+
+## 9일차
+- WPF 응용
+	- 미세먼지 확인 앱 완료
+		- MahApps.Metro
+		- 데이터 포털 OpenAPI
+		- DB 데이터 바인딩(MySQL)
+	- 개인 포트폴리오 개발방식
+		- 데이터 포털 OpenAPI
+		- 네이버, 카카오 OpenAPI
+		- 기타 OpenAPI
