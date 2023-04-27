@@ -46,7 +46,21 @@ Windows Presentation Foundation
 	- 영화 검색앱
 		- TMDB OpenAPI
 		- MahApps.Metro
-		-MahApps.Metro.IconPacks
+		- CefSharp.Wpf
+		- MahApps.Metro.IconPacks
 		- Newtonsoft.Json
 <img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day06_1.png?raw=true" width=400 /> 
 		
+## 7일차
+- WPF 응용
+	- 영화검색앱
+		- 화면정리
+		- Youtube OpenAPI
+		- DB 데이터바인딩(SQL Sever)
+		
+## 8일차
+- WPF 응용
+	- 영화검색앱 완료
+	- DB 데이터바인딩(MySQL)
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day08_1.gif?raw=true" width=400 />
+<img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day08_2.gif?raw=true" width=400 />
