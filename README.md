@@ -22,6 +22,7 @@ Windows Presentation Foundation
 	- 데이터 바이닝 마무리
 	- 디자인(템플릿, 스타일, 리소스, 리소스 딕셔너리)
 <img src="https://github.com/llsuzn/WPF_2023/blob/main/image/Day03_0.gif?raw=true" width=400 />
+
 ## 4일차
 - WPF 응용
 	- MahApps.Metro 디자인 적용
