@@ -179,6 +179,63 @@ namespace wp12_finedustCheck
         // DB(MySQL)에서 조회 리스트 뿌리기
         private void CboReqDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (CboReqDate.SelectedValue != null)
+            {
+                // MessageBox.Show(CboReqDate.SelectedValue.ToString());
+                using (MySqlConnection conn = new MySqlConnection(Commons.myConnString))
+                {
+                    conn.Open();
+                    var query = @"SELECT Id,
+                                         Dev_id,
+                                         Name,
+                                         Loc,
+                                         Coordx,
+                                         Coordy,
+                                         Ison,
+                                         Pm10_after,
+                                         Pm25_after,
+                                         State,
+                                         Timestamp,
+                                         Company_id,
+                                         Company_name
+                                    FROM dustsensor
+                                   WHERE Timestamp LIKE CONCAT(@Timestamp ,'%' )";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Timestamp", CboReqDate.SelectedValue.ToString());
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+                    adapter.Fill(ds, "dustsensor");
+                    List<DustSensor> dustSensors = new List<DustSensor>();
+                    foreach (DataRow row in ds.Tables["dustsensor"].Rows)
+                    {
+                        dustSensors.Add(new DustSensor
+                        {
+                            Id = 0,
+                            Dev_id = Convert.ToString(row["dev_id"]),
+                            Name = Convert.ToString(row["name"]),
+                            Loc = Convert.ToString(row["loc"]),
+                            Coordx = Convert.ToDouble(row["coordx"]),
+                            Coordy = Convert.ToDouble(row["coordy"]),
+                            Ison = Convert.ToBoolean(row["ison"]),
+                            Pm10_after = Convert.ToInt32(row["pm10_after"]),
+                            Pm25_after = Convert.ToInt32(row["pm25_after"]),
+                            State = Convert.ToInt32(row["state"]),
+                            Timestamp = Convert.ToDateTime(row["timestamp"]),
+                            Company_id = Convert.ToString(row["company_id"]),
+                            Company_name = Convert.ToString(row["company_name"])
+                        });
+                    }
+
+                    this.DataContext = dustSensors;
+                    StsResult.Content = $"DB {dustSensors.Count}건 조회완료";
+                }
+            }
+
+            else
+            {
+                this.DataContext = null;
+                StsResult.Content = $"DB조회 클리어";
+            }
 
         }
 
@@ -203,6 +260,17 @@ namespace wp12_finedustCheck
                 }
                 CboReqDate.ItemsSource = saveDataList;
             }
+        }
+
+        // 그리드 특정 Row를 더블 클릭하면 새창에 센서 위치 출력
+        private void GrdResult_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var selItem = GrdResult.SelectedItem as DustSensor;
+
+            var mapWindow = new MapWindow(selItem.Coordy,selItem.Coordx);       // 부모창 위치값을 자식창으로 전달
+            mapWindow.Owner = this;     // MapWindow부모
+            mapWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner; // 부모창 중간에 출력
+            mapWindow.ShowDialog();
         }
     }
 }

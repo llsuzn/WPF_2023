@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wp12_finedustCheck", "wp12_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wp11_MovieFinder", "wp11_MovieFinder\wp11_MovieFinder.csproj", "{6A76F16B-4E55-4DD3-9BF3-86ED79E9A2F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "trafficInformation", "trafficInformation\trafficInformation.csproj", "{64CE9527-0B9E-4DC1-B578-B603D3EB7300}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6A76F16B-4E55-4DD3-9BF3-86ED79E9A2F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A76F16B-4E55-4DD3-9BF3-86ED79E9A2F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A76F16B-4E55-4DD3-9BF3-86ED79E9A2F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64CE9527-0B9E-4DC1-B578-B603D3EB7300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64CE9527-0B9E-4DC1-B578-B603D3EB7300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64CE9527-0B9E-4DC1-B578-B603D3EB7300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64CE9527-0B9E-4DC1-B578-B603D3EB7300}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -43,7 +43,8 @@
                       KeyDown="TxtMovieName_KeyDown"/>
             
             <Button x:Name="BtnSearchMovie" Grid.Column="1" FontSize="14" Margin="5,10"
-                    Content="검색" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Click="BtnSearchMovie_Click">
+                    Content="검색" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" 
+                    Click="BtnSearchMovie_Click">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
