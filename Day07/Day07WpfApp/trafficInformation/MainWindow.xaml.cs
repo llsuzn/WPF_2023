@@ -27,21 +27,37 @@ using trafficInformation.Models;
 using MySql.Data.MySqlClient;
 using MahApps.Metro.Behaviors;
 using System.Threading;
+using CefSharp.Wpf;
+using CefSharp;
+using LibVLCSharp.Shared;
+using LibVLCSharp.WPF;
 
 namespace trafficInformation
-{
+{    
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        LibVLC _libVLC;
+        LibVLCSharp.Shared.MediaPlayer _mediaPlayer;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            Core.Initialize();
+
+            _libVLC = new LibVLC();
+            _mediaPlayer = new LibVLCSharp.Shared.MediaPlayer(_libVLC);
+
+            CCTVSCREEN.MediaPlayer = _mediaPlayer;
+
             do
             {
                 Reload();
             } while (false);
+
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -129,7 +145,18 @@ namespace trafficInformation
                 {
                     var cctv = GrdResult.SelectedItem as TrafficInfo;
                     cctvPath = cctv.Cctvurl;
-                    CCTVSCREEN.Address = $"{cctvPath}";
+                    //CCTVSCREEN.Address = $"{cctvPath}";
+                    //CCTVSCREEN.SourceProvider.MediaPlayer.Play(new Uri(cctvPath));
+                    _mediaPlayer.Play(new Media(_libVLC, new Uri(cctvPath)));
+                    MAPSCREEN.Address = $"https://google.co.kr/maps/@{cctv.Coordy},{cctv.Coordx},14z";
+                }
+                else if(GrdResult.SelectedItem is FaTraffic)
+                {
+                    var cctv = GrdResult.SelectedItem as FaTraffic;
+                    cctvPath = cctv.Cctvurl;
+                    //CCTVSCREEN.Address = $"{cctvPath}";
+                    //CCTVSCREEN.SourceProvider.MediaPlayer.Play(new Uri(cctvPath));
+                    _mediaPlayer.Play(new Media(_libVLC, new Uri(cctvPath)));
                     MAPSCREEN.Address = $"https://google.co.kr/maps/@{cctv.Coordy},{cctv.Coordx},14z";
                 }
                 Debug.WriteLine(cctvPath);
@@ -314,14 +341,21 @@ namespace trafficInformation
 
         private void BtnLoad_Click(object sender, RoutedEventArgs e)
         {
-            Reload();
+            if(Dnum == 0)
+            {
+                Reload();
+            }
+            else if(Dnum == 1)
+            {
+                Reload2();
+            }
         }
 
         private async void Reload()
         {
             string apiKey = "6f76c273dc584bcfbdcebe4edb606e6d";
             string openApiUri = $@"https://openapi.its.go.kr:9443/cctvInfo?apiKey={apiKey}" +
-                                $"&type=ex&cctvType=2&minX=127.100000&maxX=128.890000&minY=34.100000&maxY=39.100000&getType=json";
+                                $"&type=ex&cctvType=1&minX=127.100000&maxX=128.890000&minY=34.100000&maxY=39.100000&getType=json";
             string result = string.Empty;
 
             WebRequest req = null;
@@ -448,13 +482,172 @@ namespace trafficInformation
                             insRes += cmd.ExecuteNonQuery();
                         }
                     }
-                    await Commons.ShowMessageAsync("로드", "DB로드 성공!");
-                    StsResult.Content = $"DB {insRes}건 로드";
+                    await Commons.ShowMessageAsync("로드", "고속도로 DB로드 성공!");
+                    StsResult.Content = $"고속도로 DB {insRes}건 로드";
                 }
             }
             catch (Exception ex)
             {
                 await Commons.ShowMessageAsync("오류", $"DB로드 오류 | {ex.Message}");
+            }
+        }
+        private async void Reload2()
+        {
+            string apiKey = "6f76c273dc584bcfbdcebe4edb606e6d";
+            string openApiUri = $@"https://openapi.its.go.kr:9443/cctvInfo?apiKey={apiKey}" +
+                                $"&type=its&cctvType=1&minX=127.100000&maxX=128.890000&minY=34.100000&maxY=39.100000&getType=json";
+            string result = string.Empty;
+
+            WebRequest req = null;
+            WebResponse res = null;
+            StreamReader reader = null;
+
+            try
+            {
+                req = WebRequest.Create(openApiUri);
+                res = await req.GetResponseAsync();
+                reader = new StreamReader(res.GetResponseStream());
+                result = reader.ReadToEnd();
+
+                Debug.WriteLine(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                reader.Close();
+                res.Close();
+            }
+
+            var jsonResult = JObject.Parse(result);
+            var data = jsonResult["response"]["data"];
+            var json_array = data as JArray;
+            var trafficInfo = new List<TrafficInfo>();
+            foreach (var val in json_array)
+            {
+                var TrafficInfo = new TrafficInfo()
+                {
+                    Datacount = Convert.ToInt32(val["datacount"]),
+                    Roadsectionid = Convert.ToString(val["roadsectionid"]),
+                    Filecreatetime = Convert.ToString(val["filecreatetime"]),
+                    Cctvtype = Convert.ToString(val["cctvtype"]),
+                    Cctvurl = Convert.ToString(val["cctvurl"]),
+                    Cctvresolution = Convert.ToString(val["cctvresolution"]),
+                    Coordx = Convert.ToString(val["coordx"]),
+                    Coordy = Convert.ToString(val["coordy"]),
+                    Cctvformat = Convert.ToString(val["cctvformat"]),
+                    Cctvname = Convert.ToString(val["cctvname"]),
+                };
+                trafficInfo.Add(TrafficInfo);
+            }
+            this.DataContext = trafficInfo;
+
+            // 데이터 삭제
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(Commons.myConnString))
+                {
+                    if (conn.State == ConnectionState.Closed) conn.Open();
+
+                    var query = "DELETE FROM TrafficInfo";
+                    var delRes = 0;
+
+                    foreach (TrafficInfo item in GrdResult.Items)
+                    {
+                        MySqlCommand cmd = new MySqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@Id", item.Id);
+
+                        delRes += cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            StsResult.Content = $"OpenAPI {trafficInfo.Count}건 삭제";
+
+            // 데이터 추가
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(Commons.myConnString))
+                {
+                    if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+                    var query = @"INSERT INTO trafficinfo
+                                             (Id,
+                                              Datacount,
+                                              Roadsectionid,
+                                              Filecreatetime,
+                                              Cctvtype,
+                                              Cctvurl,
+                                              Cctvresolution,
+                                              Coordx,
+                                              Coordy,
+                                              Cctvformat,
+                                              Cctvname)
+                                       VALUES
+                                             (@Id,
+                                              @Datacount,
+                                              @Roadsectionid,
+                                              @Filecreatetime,
+                                              @Cctvtype,
+                                              @Cctvurl,
+                                              @Cctvresolution,
+                                              @Coordx,
+                                              @Coordy,
+                                              @Cctvformat,
+                                              @Cctvname)";
+
+                    var insRes = 0;
+                    foreach (var temp in GrdResult.Items)
+                    {
+                        if (temp is TrafficInfo)
+                        {
+                            var item = temp as TrafficInfo;
+                            MySqlCommand cmd = new MySqlCommand(query, conn);
+                            cmd.Parameters.AddWithValue("@Datacount", item.Datacount);
+                            cmd.Parameters.AddWithValue("@Roadsectionid", item.Roadsectionid);
+                            cmd.Parameters.AddWithValue("@Filecreatetime", item.Filecreatetime);
+                            cmd.Parameters.AddWithValue("@Cctvtype", item.Cctvtype);
+                            cmd.Parameters.AddWithValue("@Cctvurl", item.Cctvurl);
+                            cmd.Parameters.AddWithValue("@Cctvresolution", item.Cctvresolution);
+                            cmd.Parameters.AddWithValue("@Coordx", item.Coordx);
+                            cmd.Parameters.AddWithValue("@Coordy", item.Coordy);
+                            cmd.Parameters.AddWithValue("@Cctvformat", item.Cctvformat);
+                            cmd.Parameters.AddWithValue("@Cctvname", item.Cctvname);
+
+                            insRes += cmd.ExecuteNonQuery();
+                        }
+                    }
+                    await Commons.ShowMessageAsync("로드", "국도 DB로드 성공!");
+                    StsResult.Content = $"국도 DB {insRes}건 로드";
+                }
+            }
+            catch (Exception ex)
+            {
+                await Commons.ShowMessageAsync("오류", $"DB로드 오류 | {ex.Message}");
+            }
+        }
+
+        int num = 0;
+        int Dnum;
+        private void BtnSelectRoad_Click(object sender, RoutedEventArgs e)
+        {
+            num += 1;
+            
+            Dnum = num % 2;
+            if(Dnum == 0)
+            {
+                StsResult.Content = $"고속도로 조회중";
+                Reload();
+            }
+            else if(Dnum == 1)
+            {
+                StsResult.Content = $"국도 조회중";
+                Reload2();
             }
         }
 

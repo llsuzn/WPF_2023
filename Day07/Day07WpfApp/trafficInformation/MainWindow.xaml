@@ -7,6 +7,7 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:iconPack="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+    xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
     xmlns:local="clr-namespace:trafficInformation"
     mc:Ignorable="d"
     Title="실시간 교통정보 조회 V1.0" Height="800" Width="1000" MinHeight="800" MinWidth="1000"
@@ -70,7 +71,7 @@
         </DataGrid>
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,0" Grid.RowSpan="2">
             <Button x:Name="BtnFavorite" Content="즐겨찾기" Margin="10,30" FontSize="12"
-                    Style="{StaticResource MahApps.Styles.Button}" Click="BtnFavorite_Click">
+                    Style="{StaticResource MahApps.Styles.Button}" Click="BtnFavorite_Click" >
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -113,10 +114,21 @@
                     </DataTemplate>
                 </Button.ContentTemplate>
             </Button>
+            <Button x:Name="BtnSelectRoad" Content="고속도로/국도" Margin="10,30" FontSize="12"
+                    Style="{StaticResource MahApps.Styles.Button}" Click="BtnSelectRoad_Click">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPack:PackIconVaadinIcons Kind="AreaSelect" Margin="5,5" Foreground="LightSlateGray" />
+                            <TextBlock Text="{Binding}" Margin="5"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
         </StackPanel>
 
         <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Margin="10,0,10,0" Background="LightGray" Height="300" VerticalAlignment="Center">
-            <cefSharp:ChromiumWebBrowser x:Name="CCTVSCREEN" />
+            <vlc:VideoView x:Name="CCTVSCREEN" />
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1" Margin="10,10,10,0" Background="WhiteSmoke" Height="340" VerticalAlignment="Top">
             <cefSharp:ChromiumWebBrowser x:Name="MAPSCREEN" />
